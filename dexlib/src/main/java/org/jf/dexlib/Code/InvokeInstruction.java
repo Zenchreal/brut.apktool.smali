@@ -1,6 +1,6 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2010 Ben Gruver (JesusFreke)
+ * Copyright (c) 2011 Ben Gruver
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,6 @@
 
 package org.jf.dexlib.Code;
 
-public interface OdexedInvokeVirtual {
-    int getVtableIndex();
+public interface InvokeInstruction {
+    int getRegCount();
 }

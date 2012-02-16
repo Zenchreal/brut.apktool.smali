@@ -32,6 +32,8 @@ import org.jf.dexlib.Util.AnnotatedOutput;
 import org.jf.dexlib.Util.ExceptionWithContext;
 import org.jf.dexlib.Util.Input;
 
+import org.jf.dexlib.EncodedValue.AnnotationEncodedSubValue; // MARKER
+
 import java.util.Collections;
 import java.util.List;
 
@@ -210,6 +212,37 @@ public class AnnotationDirectoryItem extends Item<AnnotationDirectoryItem> {
                         "Error occured while reading ParameterAnnotation at index " + i);
             }
         }
+        
+        // MARKER
+        /*
+        if (parameterAnnotations != null) {
+            for (int i=0; i<parameterAnnotations.length; i++) {
+                System.out.println("parameter_annotation");
+                System.out.println("    method: " + parameterAnnotationMethods[i].getMethodString());
+                System.out.println("    annotations_off: 0x" + Integer.toHexString(parameterAnnotations[i].getOffset()));
+                AnnotationSetItem[] sets = parameterAnnotations[i].getAnnotationSets();
+                System.out.println("    sets: 0x" + Integer.toString(sets.length));
+                System.out.print("    setitems: ");
+                for (AnnotationSetItem setItem: sets) {
+                	System.out.print("("); //Integer.toString(setItem.getAnnotations().length) + " ");
+                	
+                	for (AnnotationItem item: setItem.getAnnotations()) {
+                		AnnotationEncodedSubValue inner = item.getEncodedAnnotation();
+                		
+                		System.out.println("        annotation_type: " + inner.annotationType.getTypeDescriptor());
+						System.out.println("        element_count: 0x" + Integer.toHexString(inner.names.length) + " (" + inner.names.length + ")");
+
+						for (int j=0; j<inner.names.length; j++) {
+							System.out.println("            element_name: " + inner.names[j].getStringValue());
+							System.out.println("            element_value:");
+						}
+                	}
+                	System.out.print(") ");
+                }
+                System.out.println();
+            }
+        }
+        */
     }
 
     /** {@inheritDoc} */

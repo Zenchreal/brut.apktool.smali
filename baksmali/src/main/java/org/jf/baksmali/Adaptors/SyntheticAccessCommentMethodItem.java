@@ -1,6 +1,6 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2010 Ben Gruver (JesusFreke)
+ * Copyright (c) 2011 Ben Gruver
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,37 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jf.dexlib.Code;
+package org.jf.baksmali.Adaptors;
 
-public interface OdexedInvokeVirtual {
-    int getVtableIndex();
+import org.jf.dexlib.Code.Analysis.SyntheticAccessorResolver;
+import static org.jf.dexlib.Code.Analysis.SyntheticAccessorResolver.AccessedMember;
+import org.jf.util.IndentingWriter;
+
+import java.io.IOException;
+
+public class SyntheticAccessCommentMethodItem extends MethodItem {
+    private final AccessedMember accessedMember;
+
+    public SyntheticAccessCommentMethodItem(AccessedMember accessedMember, int codeAddress) {
+        super(codeAddress);
+        this.accessedMember = accessedMember;
+    }
+
+    public double getSortOrder() {
+        //just before the pre-instruction register information, if any
+        return 99.8;
+    }
+
+    public boolean writeTo(IndentingWriter writer) throws IOException {
+        writer.write('#');
+        if (accessedMember.getAccessedMemberType() == SyntheticAccessorResolver.METHOD) {
+            writer.write("calls: ");
+        } else if (accessedMember.getAccessedMemberType() == SyntheticAccessorResolver.GETTER) {
+            writer.write("getter for: ");
+        } else {
+            writer.write("setter for: ");
+        }
+        ReferenceFormatter.writeReference(writer, accessedMember.getAccessedMember());
+        return true;
+    }
 }

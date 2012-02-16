@@ -1,6 +1,6 @@
 /*
  * [The "BSD licence"]
- * Copyright (c) 2010 Ben Gruver (JesusFreke)
+ * Copyright (c) 2011 Ben Gruver
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.jf.dexlib.Code;
+package org.jf.dexlib.Code.Analysis;
 
-public interface OdexedInvokeVirtual {
-    int getVtableIndex();
+import org.jf.dexlib.ClassDefItem;
+import org.jf.dexlib.DexFile;
+import org.jf.dexlib.TypeIdItem;
+
+import java.util.HashMap;
+
+/**
+ * Keeps a simple map of classes defined in a dex file, allowing you to look them up by TypeIdItem or name
+ */
+public class DexFileClassMap {
+    private final HashMap<String, ClassDefItem> definedClasses = new HashMap<String, ClassDefItem>();
+
+    public DexFileClassMap(DexFile dexFile) {
+        for (ClassDefItem classDefItem: dexFile.ClassDefsSection.getItems()) {
+            definedClasses.put(classDefItem.getClassType().getTypeDescriptor(), classDefItem);
+        }
+    }
+
+    public ClassDefItem getClassDefByName(String typeName) {
+        return definedClasses.get(typeName);
+    }
+
+    public ClassDefItem getClassDefByType(TypeIdItem typeIdItem) {
+        return definedClasses.get(typeIdItem.getTypeDescriptor());
+    }
 }
